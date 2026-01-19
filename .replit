@@ -1,0 +1,14 @@
+run = "python app.py"
+entrypoint = "app.py"
+language = "python3"
+
+[nix]
+channel = "stable-22_11"
+
+[deploy]
+run = ["sh", "-c", "python app.py"]
+
+[env]
+FLASK_APP = "app.py"
+FLASK_ENV = "production"
+
