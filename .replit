@@ -2,6 +2,9 @@ run = "python app.py"
 entrypoint = "app.py"
 language = "python3"
 
+[build]
+command = "pip install -r requirements.txt"
+
 [nix]
 channel = "stable-22_11"
 

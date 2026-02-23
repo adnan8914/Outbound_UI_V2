@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ElevenLabs Outbound Call UI</title>
+    <title>FlowAI Precision Outbound</title>
     <style>
         * {
             margin: 0;
@@ -13,80 +13,241 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             min-height: 100vh;
-            padding: 20px;
+            padding: 15px;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             overflow: hidden;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px;
+            padding: 32px 30px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
         }
 
         .header h1 {
             font-size: 28px;
-            margin-bottom: 10px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: white;
+            letter-spacing: -0.5px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
         .header p {
-            opacity: 0.9;
-            font-size: 14px;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 15px;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
         }
 
         .form-container {
-            padding: 40px;
+            padding: 35px;
+            background: #fafbfc;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                max-width: 95%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+            
+            .form-container {
+                padding: 25px;
+            }
+            
+            .header {
+                padding: 28px 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 10px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 24px 18px;
+            }
+            
+            .header h1 {
+                font-size: 22px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .header p {
+                font-size: 13px;
+            }
         }
 
         .form-section {
-            margin-bottom: 30px;
+            margin-bottom: 32px;
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section:last-of-type {
+            margin-bottom: 24px;
         }
 
         .form-section h2 {
-            color: #333;
-            font-size: 20px;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #667eea;
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 22px;
+            padding-bottom: 12px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-section:nth-child(1) h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .form-section:nth-child(2) h2 {
+            color: #f093fb;
+            border-bottom: 3px solid #f093fb;
+        }
+
+        .form-section:nth-child(3) h2 {
+            color: #4facfe;
+            border-bottom: 3px solid #4facfe;
+        }
+
+        .form-section:nth-child(4) h2 {
+            color: #43e97b;
+            border-bottom: 3px solid #43e97b;
+        }
+
+        .form-section:nth-child(5) h2 {
+            color: #fa709a;
+            border-bottom: 3px solid #fa709a;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
+            color: #374151;
+            font-weight: 600;
             font-size: 14px;
+            letter-spacing: 0.3px;
         }
 
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
+            padding: 12px 14px;
+            border: 2px solid #e5e7eb;
             border-radius: 8px;
             font-size: 14px;
             transition: all 0.3s ease;
+            background: #ffffff;
+            color: #111827;
+        }
+
+        .form-group input:hover,
+        .form-group select:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .form-group input::placeholder {
+            color: #9ca3af;
+        }
+
+        .form-group input[readonly] {
+            background-color: #f9fafb;
+            cursor: not-allowed;
         }
 
         .form-row {
@@ -98,55 +259,134 @@
         @media (max-width: 768px) {
             .form-row {
                 grid-template-columns: 1fr;
+                gap: 18px;
+            }
+            
+            .form-section {
+                padding: 20px;
+            }
+            
+            .form-section h2 {
+                font-size: 17px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 16px;
+            }
+            
+            .form-section {
+                margin-bottom: 24px;
+                padding: 18px;
+            }
+            
+            .form-section h2 {
+                font-size: 16px;
             }
         }
 
         .submit-btn {
             width: 100%;
-            padding: 16px;
+            padding: 16px 28px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            margin-top: 20px;
+            transition: all 0.3s ease;
+            margin-top: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
         }
 
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
         }
 
         .submit-btn:active {
             transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
         }
 
         .submit-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        @media (max-width: 640px) {
+            .submit-btn {
+                padding: 14px 24px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .submit-btn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
         }
 
         .message {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 22px;
             display: none;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-line;
+            animation: slideDown 0.3s ease;
+            font-weight: 500;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .message.success {
-            background: #d4edda;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
             color: #155724;
-            border: 1px solid #c3e6cb;
+            border: 2px solid #28a745;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
         }
 
         .message.error {
-            background: #f8d7da;
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
             color: #721c24;
-            border: 1px solid #f5c6cb;
+            border: 2px solid #dc3545;
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2);
         }
 
         .message.show {
@@ -164,12 +404,12 @@
         }
 
         .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
+            border: 4px solid rgba(102, 126, 234, 0.2);
+            border-top: 4px solid #667eea;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
+            width: 45px;
+            height: 45px;
+            animation: spin 0.8s linear infinite;
             margin: 0 auto;
         }
 
@@ -179,22 +419,37 @@
         }
 
         .result-info {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
+            background: #f9fafb;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-top: 12px;
             font-size: 13px;
+            border: 1px solid #e5e7eb;
         }
 
         .result-info strong {
+            color: #6366f1;
+        }
+
+        .form-group small {
+            color: #6b7280;
+            font-size: 12px;
+            margin-top: 6px;
+            display: block;
+            font-style: italic;
+        }
+
+        .loading p {
             color: #667eea;
+            font-weight: 600;
+            margin-top: 12px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>📞 ElevenLabs Outbound Call</h1>
+            <h1>flowai precision outbound</h1>
             <p>Initiate outbound calls with dynamic variables</p>
         </div>
 
@@ -217,7 +472,7 @@
                             placeholder="+14155552671 or +919876543210"
                             required
                         >
-                        <small style="color: #666; font-size: 12px; margin-top: 5px; display: block;">
+                        <small>
                             Format: +1XXXXXXXXXX (US) or +91XXXXXXXXXX (India)
                         </small>
                     </div>
@@ -227,72 +482,62 @@
                     <h2>Patient Information</h2>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="patient_name">Patient Name</label>
-                            <input type="text" id="patient_name" name="patient_name">
+                            <label for="patient_first_name">Patient First Name</label>
+                            <input type="text" id="patient_first_name" name="patient_first_name">
                         </div>
                         <div class="form-group">
-                            <label for="patient_id">Patient ID</label>
-                            <input type="text" id="patient_id" name="patient_id">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="patient_email">Patient Email</label>
-                            <input type="email" id="patient_email" name="patient_email">
-                        </div>
-                        <div class="form-group">
-                            <label for="patient_dob">Patient Date of Birth</label>
-                            <input type="date" id="patient_dob" name="patient_dob">
+                            <label for="patient_last_name">Patient Last Name</label>
+                            <input type="text" id="patient_last_name" name="patient_last_name">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="patient_address">Patient Address</label>
-                        <input type="text" id="patient_address" name="patient_address">
+                        <label for="patient_id">Patient ID</label>
+                        <input type="text" id="patient_id" name="patient_id">
+                    </div>
+                    <div class="form-group">
+                        <label for="medical_record_number">Medical Record Number</label>
+                        <input type="text" id="medical_record_number" name="medical_record_number">
                     </div>
                 </div>
 
                 <div class="form-section">
                     <h2>Appointment Information</h2>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="patient_appointment_type">Appointment Type *</label>
-                            <select id="patient_appointment_type" name="patient_appointment_type" required>
-                                <option value="">Select appointment type</option>
-                                <option value="MRI">MRI</option>
-                                <option value="Open MRI">Open MRI</option>
-                                <option value="CT Scan">CT Scan</option>
-                                <option value="Ultrasound">Ultrasound</option>
-                                <option value="Digital X-Ray">Digital X-Ray</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="CT_Type">CT Type</label>
-                            <input 
-                                type="text" 
-                                id="CT_Type" 
-                                name="CT_Type" 
-                                placeholder="Auto-filled when CT Scan is selected"
-                                readonly
-                            >
-                        </div>
+                    <div class="form-group">
+                        <label for="patient_appointment_type">Appointment Type *</label>
+                        <select id="patient_appointment_type" name="patient_appointment_type" required>
+                            <option value="">Select appointment type</option>
+                            <option value="MRI">MRI</option>
+                            <option value="Open MRI">Open MRI</option>
+                            <option value="CT Scan">CT Scan</option>
+                            <option value="Ultrasound">Ultrasound</option>
+                            <option value="Digital X-Ray">Digital X-Ray</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="procedure_name">Procedure Name</label>
                         <input type="text" id="procedure_name" name="procedure_name">
                     </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="order_number">Order Number</label>
+                            <input type="text" id="order_number" name="order_number">
+                        </div>
+                        <div class="form-group">
+                            <label for="procedure_code">Procedure Code</label>
+                            <input type="text" id="procedure_code" name="procedure_code">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="order_date">Order Date</label>
+                        <input type="date" id="order_date" name="order_date">
+                    </div>
                 </div>
 
                 <div class="form-section">
                     <h2>Insurance Information</h2>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="patient_insurance_name">Insurance Name</label>
-                            <input type="text" id="patient_insurance_name" name="patient_insurance_name">
-                        </div>
-                        <div class="form-group">
-                            <label for="patient_insurance_member_id">Insurance Member ID</label>
-                            <input type="text" id="patient_insurance_member_id" name="patient_insurance_member_id">
-                        </div>
+                    <div class="form-group">
+                        <label for="patient_insurance_name">Insurance Name</label>
+                        <input type="text" id="patient_insurance_name" name="patient_insurance_name">
                     </div>
                 </div>
 
@@ -322,17 +567,6 @@
         const messageDiv = document.getElementById('message');
         const loadingDiv = document.getElementById('loading');
         const submitBtn = document.getElementById('submitBtn');
-        const appointmentTypeSelect = document.getElementById('patient_appointment_type');
-        const ctTypeInput = document.getElementById('CT_Type');
-
-        // Auto-fill CT_Type when CT Scan is selected
-        appointmentTypeSelect.addEventListener('change', function() {
-            if (this.value === 'CT Scan') {
-                ctTypeInput.value = 'CT_Scan_Contrast';
-            } else {
-                ctTypeInput.value = '';
-            }
-        });
 
         function showMessage(text, isError = false) {
             messageDiv.textContent = text;
@@ -359,18 +593,22 @@
             messageDiv.classList.remove('show');
 
             // Collect all form data
+            // Combine first and last name for patient_name
+            const patientFirstName = document.getElementById('patient_first_name').value.trim();
+            const patientLastName = document.getElementById('patient_last_name').value.trim();
+            const patientName = [patientFirstName, patientLastName].filter(Boolean).join(' ');
+
             const formData = {
                 to_number: document.getElementById('to_number').value.trim(),
                 dynamic_variables: {
-                    patient_name: document.getElementById('patient_name').value.trim(),
-                    procedure_name: document.getElementById('procedure_name').value.trim(),
+                    patient_name: patientName,
                     patient_id: document.getElementById('patient_id').value.trim(),
-                    patient_insurance_member_id: document.getElementById('patient_insurance_member_id').value.trim(),
-                    patient_email: document.getElementById('patient_email').value.trim(),
+                    medical_record_number: document.getElementById('medical_record_number').value.trim(),
                     patient_appointment_type: document.getElementById('patient_appointment_type').value.trim(),
-                    patient_address: document.getElementById('patient_address').value.trim(),
-                    patient_dob: document.getElementById('patient_dob').value.trim(),
-                    CT_Type: document.getElementById('CT_Type').value.trim(),
+                    procedure_name: document.getElementById('procedure_name').value.trim(),
+                    order_number: document.getElementById('order_number').value.trim(),
+                    procedure_code: document.getElementById('procedure_code').value.trim(),
+                    order_date: document.getElementById('order_date').value.trim(),
                     referring_physician_first_name: document.getElementById('referring_physician_first_name').value.trim(),
                     referring_physician_last_name: document.getElementById('referring_physician_last_name').value.trim(),
                     patient_insurance_name: document.getElementById('patient_insurance_name').value.trim()
@@ -398,7 +636,6 @@
                     }
                     showMessage(successMsg, false);
                     form.reset();
-                    ctTypeInput.value = '';
                 } else {
                     showMessage(`❌ Error: ${result.error}`, true);
                 }
