@@ -63,7 +63,11 @@ def validate_phone_number(phone):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html'), 200
+
+@app.route('/health')
+def health():
+    return jsonify({"status": "healthy"}), 200
 
 @app.route('/api/make-call', methods=['POST'])
 def make_call():
@@ -120,6 +124,9 @@ def make_call():
         for key in required_keys:
             if key not in processed_vars:
                 processed_vars[key] = " "
+
+        # Explicitly remove patient_id if present; it should not be sent
+        processed_vars.pop("patient_id", None)
         
         # Handle CT_Type based on appointment type
         appointment_type = processed_vars.get('patient_appointment_type', '').strip()

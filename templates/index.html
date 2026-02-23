@@ -491,10 +491,6 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="patient_id">Patient ID</label>
-                        <input type="text" id="patient_id" name="patient_id">
-                    </div>
-                    <div class="form-group">
                         <label for="medical_record_number">Medical Record Number</label>
                         <input type="text" id="medical_record_number" name="medical_record_number">
                     </div>
@@ -602,7 +598,6 @@
                 to_number: document.getElementById('to_number').value.trim(),
                 dynamic_variables: {
                     patient_name: patientName,
-                    patient_id: document.getElementById('patient_id').value.trim(),
                     medical_record_number: document.getElementById('medical_record_number').value.trim(),
                     patient_appointment_type: document.getElementById('patient_appointment_type').value.trim(),
                     procedure_name: document.getElementById('procedure_name').value.trim(),

@@ -1,12 +1,13 @@
 run = "python app.py"
 entrypoint = "app.py"
 language = "python3"
+modules = ["web", "python-3.12"]
 
 [build]
 command = "pip install -r requirements.txt"
 
 [nix]
-channel = "stable-22_11"
+channel = "stable-25_05"
 
 [deploy]
 run = ["sh", "-c", "python app.py"]
@@ -14,4 +15,16 @@ run = ["sh", "-c", "python app.py"]
 [env]
 FLASK_APP = "app.py"
 FLASK_ENV = "production"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[deployment]
+build = ["sh", "-c", "pip install -r requirements.txt"]
+deploymentTarget = "cloudrun"
+run = ["sh", "-c", "python app.py"]
+
+[agent]
+expertMode = true
 
