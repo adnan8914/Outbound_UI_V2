@@ -594,16 +594,11 @@
             setLoading(true);
             messageDiv.classList.remove('show');
 
-            // Collect all form data
-            // Combine first and last name for patient_name
-            const patientFirstName = document.getElementById('patient_first_name').value.trim();
-            const patientLastName = document.getElementById('patient_last_name').value.trim();
-            const patientName = [patientFirstName, patientLastName].filter(Boolean).join(' ');
-
             const formData = {
                 to_number: document.getElementById('to_number').value.trim(),
                 dynamic_variables: {
-                    patient_name: patientName,
+                    patient_first_name: document.getElementById('patient_first_name').value.trim(),
+                    patient_last_name: document.getElementById('patient_last_name').value.trim(),
                     medical_record_number: document.getElementById('medical_record_number').value.trim(),
                     patient_appointment_type: document.getElementById('patient_appointment_type').value.trim(),
                     procedure_name: document.getElementById('procedure_name').value.trim(),
