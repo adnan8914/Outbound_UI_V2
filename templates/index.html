@@ -482,17 +482,21 @@
                     <h2>Patient Information</h2>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="patient_first_name">Patient First Name</label>
-                            <input type="text" id="patient_first_name" name="patient_first_name">
+                            <label for="patient_first_name">Patient First Name *</label>
+                            <input type="text" id="patient_first_name" name="patient_first_name" required>
                         </div>
                         <div class="form-group">
-                            <label for="patient_last_name">Patient Last Name</label>
-                            <input type="text" id="patient_last_name" name="patient_last_name">
+                            <label for="patient_last_name">Patient Last Name *</label>
+                            <input type="text" id="patient_last_name" name="patient_last_name" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="medical_record_number">Medical Record Number</label>
-                        <input type="text" id="medical_record_number" name="medical_record_number">
+                        <label for="patient_gender">Gender *</label>
+                        <select id="patient_gender" name="patient_gender" required>
+                            <option value="">Select gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
                     </div>
                 </div>
 
@@ -516,30 +520,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="procedure_name">Procedure Name</label>
-                        <input type="text" id="procedure_name" name="procedure_name">
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="order_number">Order Number</label>
-                            <input type="text" id="order_number" name="order_number">
-                        </div>
-                        <div class="form-group">
-                            <label for="procedure_code">Procedure Code</label>
-                            <input type="text" id="procedure_code" name="procedure_code">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="order_date">Order Date</label>
-                        <input type="date" id="order_date" name="order_date">
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <h2>Insurance Information</h2>
-                    <div class="form-group">
-                        <label for="patient_insurance_name">Insurance Name</label>
-                        <input type="text" id="patient_insurance_name" name="patient_insurance_name">
+                        <label for="procedure_name">Procedure Name *</label>
+                        <input type="text" id="procedure_name" name="procedure_name" required>
                     </div>
                 </div>
 
@@ -599,15 +581,11 @@
                 dynamic_variables: {
                     patient_first_name: document.getElementById('patient_first_name').value.trim(),
                     patient_last_name: document.getElementById('patient_last_name').value.trim(),
-                    medical_record_number: document.getElementById('medical_record_number').value.trim(),
-                    patient_appointment_type: document.getElementById('patient_appointment_type').value.trim(),
                     procedure_name: document.getElementById('procedure_name').value.trim(),
-                    order_number: document.getElementById('order_number').value.trim(),
-                    procedure_code: document.getElementById('procedure_code').value.trim(),
-                    order_date: document.getElementById('order_date').value.trim(),
                     referring_physician_first_name: document.getElementById('referring_physician_first_name').value.trim(),
                     referring_physician_last_name: document.getElementById('referring_physician_last_name').value.trim(),
-                    patient_insurance_name: document.getElementById('patient_insurance_name').value.trim()
+                    patient_gender: document.getElementById('patient_gender').value.trim(),
+                    patient_appointment_type: document.getElementById('patient_appointment_type').value.trim(),
                 }
             };
 

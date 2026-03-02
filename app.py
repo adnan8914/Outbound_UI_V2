@@ -8,8 +8,8 @@ app = Flask(__name__)
 CORS(app)
 
 # Hardcoded agent configuration
-AGENT_ID = "agent_1901kj0npeb1ensaya8ax8kthrdw"
-AGENT_PHONE_NUMBER_ID = "phnum_2601kdtetwm8ekms2wakxxvpxyvy"
+AGENT_ID = "agent_2901kjjw7dvbewerjp1csvgpvjz2"
+AGENT_PHONE_NUMBER_ID = "phnum_1401kbkjfxxzfgx95b8sdfqczkkf"
 ELEVENLABS_API_URL = "https://api.elevenlabs.io/v1/convai/twilio/outbound-call"
 
 def validate_phone_number(phone):
@@ -73,6 +73,11 @@ def health():
 def make_call():
     try:
         data = request.json
+        if not isinstance(data, dict):
+            return jsonify({
+                'success': False,
+                'error': 'Invalid JSON body'
+            }), 400
         
         # Get API key from environment variable
         api_key = os.getenv('ELEVENLABS_API_KEY')
@@ -93,48 +98,52 @@ def make_call():
         
         # Get dynamic variables from request
         dynamic_vars = data.get('dynamic_variables', {})
-        
-        # Process dynamic variables: replace empty strings with space
-        processed_vars = {}
-        for key, value in dynamic_vars.items():
-            if value is None or value.strip() == '':
-                processed_vars[key] = " "
-            else:
-                processed_vars[key] = value.strip()
-        
-        # Always send single space for removed fields
-        processed_vars['patient_email'] = " "
-        processed_vars['patient_dob'] = " "
-        processed_vars['patient_address'] = " "
-        processed_vars['patient_insurance_member_id'] = " "
-        
-        # Ensure required dynamic variables exist, defaulting to single space
-        required_keys = [
-            "patient_appointment_type",
-            "procedure_name",
-            "order_number",
+        if not isinstance(dynamic_vars, dict):
+            return jsonify({
+                'success': False,
+                'error': 'dynamic_variables must be a JSON object'
+            }), 400
+
+        # Required dynamic variables (must be provided by UI)
+        required_dynamic_keys = [
             "patient_first_name",
             "patient_last_name",
+            "procedure_name",
             "referring_physician_first_name",
             "referring_physician_last_name",
-            "patient_insurance_name",
-            "procedure_code",
-            "medical_record_number",
-            "order_date",
+            "patient_gender",
+            "patient_appointment_type",
         ]
-        for key in required_keys:
-            if key not in processed_vars:
-                processed_vars[key] = " "
 
-        # Explicitly remove patient_id if present; it should not be sent
-        processed_vars.pop("patient_id", None)
-        
-        # Handle CT_Type based on appointment type
-        appointment_type = processed_vars.get('patient_appointment_type', '').strip()
-        if appointment_type == 'CT Scan':
-            processed_vars['CT_Type'] = 'CT_Scan_Contrast'
-        else:
-            processed_vars['CT_Type'] = " "
+        processed_vars = {}
+        missing_fields = []
+        for key in required_dynamic_keys:
+            raw_value = dynamic_vars.get(key, "")
+            value = raw_value.strip() if isinstance(raw_value, str) else str(raw_value).strip()
+            if not value:
+                missing_fields.append(key)
+            else:
+                processed_vars[key] = value
+
+        if missing_fields:
+            return jsonify({
+                'success': False,
+                'error': f"Missing required fields: {', '.join(missing_fields)}"
+            }), 400
+
+        # Backend-only dynamic variables (always sent as single space)
+        backend_only_keys = [
+            "patient_appointment_start",
+            "patient_id",
+            "patient_insurance_member_id",
+            "patient_insurance_name",
+            "patient_phone",
+            "patient_email",
+            "patient_dob",
+            "mrn",
+        ]
+        for key in backend_only_keys:
+            processed_vars[key] = " "
         
         # Prepare request payload
         payload = {
